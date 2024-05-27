@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import networkx as nx
 
 from database.DAO import DAO
@@ -16,11 +18,17 @@ pathD = mymodel.trovaCamminoD(v0, v1)
 pathBFS = mymodel.trovaCamminoBFS(v0, v1)
 pathDFS = mymodel.trovaCamminoDFS(v0, v1)
 
-print("Metodo di Dijkstra")  # Dijkstra restutisce il cammino piu breve e con gli archi con peso minore
+print("Metodo di Dijkstra")  # Dijkstra restituisce il cammino ottimo in termini di peso minore
 print(*pathD, sep='\n')
 print("------")
-print("Metodo albero Breadth first")
+print("Metodo albero Breadth first")  # BFS restituisce il cammino più breve in termini di numero di archi
 print(*pathBFS, sep='\n')
 print("------")
-print("Metodo albero Depth first")  # DFS ci restituirà quello più lungo
+print("Metodo albero Depth first")  # DFS ci restituirà quello più lungo in termini di numero di archi
 print(*pathDFS, sep='\n')
+
+tic = datetime.now()
+bestPath, bestScore = mymodel.getCamminoOttimo(v0, v1, 4)
+print("-----------------")
+print(f"Cammino ottimo da {v0} a {v1} ha peso: {bestScore}.\n Trovato in {datetime.now() - tic}")
+print(*bestPath, sep='\n')
