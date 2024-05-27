@@ -44,8 +44,39 @@ class Model:
         viciniTuple.sort(key=lambda x: x[1], reverse=True)
         return viciniTuple
 
-    def isConnected(self, v0, v1):
-        pass
+    def esistePercorso(self, v0, v1):
+        connessa = nx.node_connected_component(self._grafo, v0)  # metodo che ritorna la comp connessa che contiene v0
+        if v1 in connessa:  # se v1 fa parte della comp connessa vuo dire che esiste un percorso tra v0 e v1
+            return True
+        return False
+
+    def trovaCamminoD(self, v0, v1):
+        return nx.dijkstra_path(self._grafo, v0, v1)  # trova il cammino ottimo: restituisce una lista di nodi
+
+    def trovaCamminoBFS(self, v0, v1):
+        tree = nx.bfs_tree(self._grafo, v0)  # restituisce un grafo
+        if v1 in tree:
+            print(f"{v1} è presente nell'albero di visita")  # se uso questo metodo posso verificare qui se v1 è connesso a v0
+        path = [v1]
+
+        while path[-1] != v0:
+            path.append(list(tree.predecessors(path[-1]))[0])  # l' albero ha sempre un predecessore
+
+        path.reverse()  # per avere il path dal source al target
+        return path
+
+    def trovaCamminoDFS(self, v0, v1):
+        tree = nx.dfs_tree(self._grafo, v0)  # restituisce un grafo
+        if v1 in tree:
+            print(
+                f"{v1} è presente nell'albero di visita")  # se uso questo metodo posso verificare qui se v1 è connesso a v0
+        path = [v1]
+
+        while path[-1] != v0:
+            path.append(list(tree.predecessors(path[-1]))[0])  # l' albero ha sempre un predecessore
+
+        path.reverse()  # per avere il path dal source al target
+        return path
 
     def getNumNodi(self):
         return len(self._grafo.nodes)

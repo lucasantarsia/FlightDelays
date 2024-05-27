@@ -46,7 +46,27 @@ class Controller:
         self._view.update_page()
 
     def handleTestConnessione(self, e):
-        pass
+        v0 = self._aeroportoP
+        v1 = self._aeroportoA
+
+        self._view._txt_result.controls.clear()
+
+        # verificare che ci sia un percorso
+        if (not self._model.esistePercorso(v0, v1)):
+            self._view._txt_result.controls.append(ft.Text(f"Non esiste un percorso fra {v0} e {v1}."))
+            self._view.update_page()
+            return
+        else:
+            self._view._txt_result.controls.append(ft.Text(f"Percorso fra {v0} e {v1} trovato."))
+            self._view.update_page()
+
+        path = self._model.trovaCamminoBFS(v0, v1)
+        self._view._txt_result.controls.append(ft.Text(f"Il cammino con minor numero di archi tra {v0} e {v1} è:"))
+        for p in path:
+            self._view._txt_result.controls.append(ft.Text(f"{p}"))
+        self._view.update_page()
+
+        # trovare un possibile percorso
 
     def handleCercaItinerario(self, e):
         pass
