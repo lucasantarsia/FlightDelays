@@ -56,10 +56,10 @@ class Model:
         return False
 
     def trovaCamminoD(self, v0, v1):
-        return nx.dijkstra_path(self._grafo, v0, v1)  # trova il cammino ottimo: restituisce una lista di nodi
+        return nx.dijkstra_path(self._grafo, v0, v1)  # Dijkstra restituisce il cammino ottimo in termini di peso minore
 
     def trovaCamminoBFS(self, v0, v1):
-        tree = nx.bfs_tree(self._grafo, v0)  # restituisce un grafo
+        tree = nx.bfs_tree(self._grafo, v0)  # BFS restituisce il cammino più breve in termini di numero di archi
         if v1 in tree:
             print(f"{v1} è presente nell'albero di visita")  # se uso questo metodo posso verificare qui se v1 è connesso a v0
         path = [v1]
@@ -71,7 +71,7 @@ class Model:
         return path
 
     def trovaCamminoDFS(self, v0, v1):
-        tree = nx.dfs_tree(self._grafo, v0)  # restituisce un grafo
+        tree = nx.dfs_tree(self._grafo, v0)  # DFS ci restituirà quello più lungo in termini di numero di archi
         if v1 in tree:
             print(
                 f"{v1} è presente nell'albero di visita")  # se uso questo metodo posso verificare qui se v1 è connesso a v0
@@ -94,8 +94,8 @@ class Model:
         return self._bestPath, self._bestObjFun
 
     def _ricorsione(self, parziale, target, t):
-        # Verificare che parziale sia un apossibile soluzione
-            # Verificare che parziale sia meglio di best
+        # Verificare che parziale sia una possibile soluzione
+            # Verificare che parziale è meglio di best
             # Esco
 
         if len(parziale) == t+1:
@@ -111,12 +111,12 @@ class Model:
 
         for n in self._grafo.neighbors(parziale[-1]):
             # nel caso se ce lo chiede possiamo inserire condizione che non deve passare tra stessi nodi e stessi archi
-            if n not in parziale:
+            if n not in parziale:  # così il percorso non passa dagli stessi nodi
                 parziale.append(n)
                 self._ricorsione(parziale, target, t)
                 parziale.pop()
 
-    def getObjFun(self, listOfNodes):
+    def getObjFun(self, listOfNodes):  # ritorna il peso totale dato una lista di nodi
         objVal = 0
         for i in range(0, len(listOfNodes)-1):
             objVal += self._grafo[listOfNodes[i]][listOfNodes[i+1]]["weight"]
